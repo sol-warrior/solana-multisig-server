@@ -3,8 +3,9 @@ use dotenvy::dotenv;
 use sqlx::postgres::PgPoolOptions;
 use std::env;
 
+mod auth_middleware;
 mod routes;
-use routes::auth::{login, register};
+use routes::auth::{login, me, register};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -24,6 +25,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .service(register)
             .service(login)
+            .service(me)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
