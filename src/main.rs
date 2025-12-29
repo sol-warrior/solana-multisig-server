@@ -4,7 +4,7 @@ use sqlx::postgres::PgPoolOptions;
 use std::env;
 
 mod routes;
-use routes::auth::register;
+use routes::auth::{login, register};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -23,6 +23,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(pool.clone()))
             .service(register)
+            .service(login)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
